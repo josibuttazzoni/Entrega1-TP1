@@ -24,9 +24,9 @@ cantidadVocales unAuto = length.filter (\letra -> elem letra "aeiouAEIOU").nombr
 
 incrementarVelocidad :: Auto -> Auto
 incrementarVelocidad unAuto
-    |(cantidadVocales unAuto >= 1 && cantidadVocales unAuto <=2) = unAuto {velocidad=((+15).velocidad) unAuto}
-    |(cantidadVocales unAuto >= 3 && cantidadVocales unAuto <=4) = unAuto {velocidad=((+20).velocidad) unAuto}
-    |cantidadVocales unAuto >= 4 = unAuto {velocidad=((+30).velocidad) unAuto}
+    |cantidadVocales unAuto <=2 = cambiarVelocidad unAuto (+15)
+    |cantidadVocales unAuto <=4 = cambiarVelocidad unAuto (+20)
+    |cantidadVocales unAuto >4 = cambiarVelocidad unAuto (+30)
 
 puedeRealizarTruco :: Auto -> Bool
 puedeRealizarTruco unAuto = ((>0).nivelNafta) unAuto && ((<100).velocidad) unAuto
