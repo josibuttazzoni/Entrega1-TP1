@@ -3,7 +3,7 @@ data Auto = Auto {nombre :: String, nivelNafta :: Int, velocidad :: Int , nombre
 deReversa :: Auto -> Auto
 deReversa unAuto = unAuto {nivelNafta = ((+200).nivelNafta) unAuto}
 
-cambiarVelocidad unAuto incremento= unAuto {velocidad=incremento.velocidad $unAuto}
+cambiarVelocidad unAuto incremento = unAuto {velocidad=incremento.velocidad $unAuto}
 
 impresionar :: Auto -> Auto
 impresionar unAuto = cambiarVelocidad unAuto (*2)
