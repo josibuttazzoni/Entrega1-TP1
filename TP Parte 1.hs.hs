@@ -3,11 +3,13 @@ data Auto = Auto {nombre :: String, nivelNafta :: Int, velocidad :: Int , nombre
 deReversa :: Auto -> Auto
 deReversa unAuto = unAuto {nivelNafta = ((+200).nivelNafta) unAuto}
 
+cambiarVelocidad unAuto incremento= unAuto {velocidad=incremento.velocidad $unAuto}
+
 impresionar :: Auto -> Auto
-impresionar unAuto = unAuto {velocidad = ((*2).velocidad) unAuto}
+impresionar unAuto = cambiarVelocidad unAuto (*2)
 
 nitro :: Auto -> Auto
-nitro unAuto = unAuto {velocidad = ((+15).velocidad) unAuto}
+nitro unAuto = cambiarVelocidad unAuto (+15)
 
 fingirAmor :: Auto -> String -> Auto
 fingirAmor unAuto enamoradeConveniencia = unAuto {nombreEnamorade = enamoradeConveniencia}
