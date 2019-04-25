@@ -19,11 +19,8 @@ biankerr = Auto "Biankerr" 500 20 "Tinch" "impresionar"
 gusthav = Auto "Gusthav" 200 130 "PetiLaLinda" "nitro"
 rodra = Auto "Rodra" 0 50 "Taisa" "fingirAmor"
 
-vocales :: String -> String
-vocales palabra = filter(=='a') palabra ++ filter (=='e') palabra ++ filter(=='i') palabra ++ filter(=='o') palabra ++ filter(=='u') palabra
-
 cantidadVocales :: Auto -> Int
-cantidadVocales unAuto = (length.vocales.nombreEnamorade) unAuto
+cantidadVocales unAuto = length.filter (\letra -> elem letra "aeiouAEIOU").nombreEnamorade $unAuto
 
 incrementarVelocidad :: Auto -> Auto
 incrementarVelocidad unAuto
