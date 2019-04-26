@@ -1,17 +1,18 @@
-data Auto = Auto {nombre :: String, nivelNafta :: Int, velocidad :: Int , nombreEnamorade :: String, truco :: String} deriving (Show)
+data Auto = Auto {nombre :: String, nivelNafta :: Int, velocidad :: Int , nombreEnamorade :: String, truco :: Auto -> Auto} deriving Show
+type Truco = Auto -> Auto
 
-deReversa :: Auto -> Auto
+deReversa :: Truco
 deReversa unAuto = unAuto {nivelNafta = ((+200).nivelNafta) unAuto}
 
 cambiarVelocidad unAuto incremento = unAuto {velocidad=incremento.velocidad $unAuto}
 
-impresionar :: Auto -> Auto
+impresionar :: Truco
 impresionar unAuto = cambiarVelocidad unAuto (*2)
 
-nitro :: Auto -> Auto
+nitro :: Truco
 nitro unAuto = cambiarVelocidad unAuto (+15)
 
-fingirAmor :: Auto -> String -> Auto
+fingirAmor :: String -> Truco
 fingirAmor unAuto enamoradeConveniencia = unAuto {nombreEnamorade = enamoradeConveniencia}
 
 rochaMcQueen = Auto "RochaMcQueen" 300 0 "Ronco" "deReversa"
@@ -22,7 +23,7 @@ rodra = Auto "Rodra" 0 50 "Taisa" "fingirAmor"
 cantidadVocales :: Auto -> Int
 cantidadVocales unAuto = length.filter (\letra -> elem letra "aeiouAEIOU").nombreEnamorade $unAuto
 
-incrementarVelocidad :: Auto -> Auto
+incrementarVelocidad :: Truco
 incrementarVelocidad unAuto
     |cantidadVocales unAuto <=2 = cambiarVelocidad unAuto (+15)
     |cantidadVocales unAuto <=4 = cambiarVelocidad unAuto (+20)
@@ -31,11 +32,11 @@ incrementarVelocidad unAuto
 puedeRealizarTruco :: Auto -> Bool
 puedeRealizarTruco unAuto = ((>0).nivelNafta) unAuto && ((<100).velocidad) unAuto
 
-comboLoco :: Auto -> Auto
+comboLoco :: Truco
 comboLoco = deReversa.nitro 
 
-queTrucazo :: Auto -> String -> Auto
-queTrucazo unAuto enamoradeConveniencia = unAuto {velocidad = (velocidad.incrementarVelocidad) (fingirAmor unAuto enamoradeConveniencia)}
+queTrucazo :: String -> Truco
+queTrucazo enamoradeConveniencia = incrementarVelocidad.fingirAmor enamoradeConveniencia
 
-turbo :: Auto -> Auto 
+turbo :: Truco
 turbo unAuto = unAuto {velocidad = ((+velocidad unAuto).(*10).nivelNafta) unAuto , nivelNafta = 0}
