@@ -15,10 +15,10 @@ nitro unAuto = cambiarVelocidad unAuto (+15)
 fingirAmor :: String -> Truco
 fingirAmor unAuto enamoradeConveniencia = unAuto {nombreEnamorade = enamoradeConveniencia}
 
-rochaMcQueen = Auto "RochaMcQueen" 300 0 "Ronco" "deReversa"
-biankerr = Auto "Biankerr" 500 20 "Tinch" "impresionar" 
-gusthav = Auto "Gusthav" 200 130 "PetiLaLinda" "nitro"
-rodra = Auto "Rodra" 0 50 "Taisa" "fingirAmor"
+rochaMcQueen = Auto "RochaMcQueen" 300 0 "Ronco" deReversa
+biankerr = Auto "Biankerr" 500 20 "Tinch" impresionar
+gusthav = Auto "Gusthav" 200 130 "PetiLaLinda" nitro
+--rodra = Auto "Rodra" 0 50 "Taisa" fingirAmor "Petra"
 
 cantidadVocales :: Auto -> Int
 cantidadVocales unAuto = length.filter (\letra -> elem letra "aeiouAEIOU").nombreEnamorade $unAuto
