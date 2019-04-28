@@ -1,3 +1,4 @@
+import Text.Show.Functions
 data Auto = Auto {nombre :: String, nivelNafta :: Int, velocidad :: Int , nombreEnamorade :: String, truco :: Auto -> Auto} deriving Show
 type Truco = Auto -> Auto
 
