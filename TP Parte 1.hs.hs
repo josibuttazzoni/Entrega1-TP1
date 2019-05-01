@@ -27,14 +27,14 @@ nitro unAuto = cambiarVelocidad unAuto (+15)
 fingirAmor :: String -> Truco
 fingirAmor enamoradeConveniencia unAuto = unAuto {nombreEnamorade = enamoradeConveniencia}
 
-cantidadVocales :: Auto -> Int
-cantidadVocales unAuto = length.filter (\letra -> elem letra "aeiouAEIOU").nombreEnamorade $unAuto
+cantidadVocalesEnamorade :: Auto -> Int
+cantidadVocalesEnamorade unAuto = length.filter (\letra -> elem letra "aeiouAEIOU").nombreEnamorade $unAuto
 
 incrementarVelocidad :: Truco
 incrementarVelocidad unAuto
-    |cantidadVocales unAuto <=2 = cambiarVelocidad unAuto (+15)
-    |cantidadVocales unAuto <=4 = cambiarVelocidad unAuto (+20)
-    |cantidadVocales unAuto >4 = cambiarVelocidad unAuto (+30)
+    |cantidadVocalesEnamorade unAuto <=2 = cambiarVelocidad unAuto (+15)
+    |cantidadVocalesEnamorade unAuto <=4 = cambiarVelocidad unAuto (+20)
+    |cantidadVocalesEnamorade unAuto >4 = cambiarVelocidad unAuto (+30)
 
 puedeRealizarTruco :: Auto -> Bool
 puedeRealizarTruco unAuto = ((>0).nivelNafta) unAuto && ((<100).velocidad) unAuto
@@ -48,26 +48,28 @@ queTrucazo enamoradeConveniencia = incrementarVelocidad.fingirAmor enamoradeConv
 turbo :: Truco
 turbo unAuto = unAuto {velocidad = ((+velocidad unAuto).(*10).nivelNafta) unAuto , nivelNafta = 0}
 
+trampaBase unaCarrera funcion = unaCarrera {participantes = funcion.participantes $unaCarrera}
+
 sacarAlPistero :: Trampa
-sacarAlPistero unaCarrera = unaCarrera {participantes = (drop 1).participantes $unaCarrera}
+sacarAlPistero unaCarrera = trampaBase unaCarrera (drop 1)
 
 lluvia :: Truco
 lluvia unAuto = unAuto {velocidad=velocidad unAuto - 10}
 
 lluviaTrampa :: Trampa
-lluviaTrampa unaCarrera = unaCarrera {participantes=map(lluvia).participantes $unaCarrera}
+lluviaTrampa unaCarrera = trampaBase unaCarrera (map(lluvia))
 
 inutilidad :: Truco
 inutilidad unAuto = unAuto
 
 neutralizarTrucos :: Trampa
-neutralizarTrucos unaCarrera = unaCarrera {participantes = map(inutilidad).participantes $unaCarrera}
+neutralizarTrucos unaCarrera = trampaBase unaCarrera (map(inutilidad))
 
 pocaReserva :: Auto -> Bool
 pocaReserva = (>30).nivelNafta
 
 pocaReservaTrampa :: Trampa
-pocaReservaTrampa unaCarrera = unaCarrera {participantes = filter(pocaReserva).participantes $unaCarrera}
+pocaReservaTrampa unaCarrera = trampaBase unaCarrera (filter(pocaReserva))
 
 podio :: Trampa
-podio unaCarrera = unaCarrera {participantes = take 3.participantes $unaCarrera}
+podio unaCarrera = trampaBase unaCarrera (take 3)
