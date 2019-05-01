@@ -5,7 +5,6 @@ type Truco = Auto -> Auto
 data Carrera = Carrera {nombreCarrera :: String, largoPista :: Float, cantidadVueltas :: Int, publico :: [String], participantes :: [Auto], trampa :: Trampa} deriving (Show)
 type Trampa = Carrera -> Carrera
 
-
 rochaMcQueen = Auto "RochaMcQueen" 300 0 "Ronco" deReversa
 biankerr = Auto "Biankerr" 500 20 "Tinch" impresionar
 gusthav = Auto "Gusthav" 200 130 "PetiLaLinda" nitro
