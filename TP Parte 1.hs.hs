@@ -44,3 +44,6 @@ queTrucazo enamoradeConveniencia = incrementarVelocidad.fingirAmor enamoradeConv
 
 turbo :: Truco
 turbo unAuto = unAuto {velocidad = ((+velocidad unAuto).(*10).nivelNafta) unAuto , nivelNafta = 0}
+
+sacarAlPistero :: Trampa
+sacarAlPistero unaCarrera = unaCarrera {participantes = (drop 1).participantes $unaCarrera}
