@@ -2,6 +2,9 @@ import Text.Show.Functions
 data Auto = Auto {nombre :: String, nivelNafta :: Int, velocidad :: Int , nombreEnamorade :: String, truco :: Auto -> Auto} deriving Show
 type Truco = Auto -> Auto
 
+data Carrera = Carrera {nombreCarrera :: String, largoPista :: Float, cantidadVueltas :: Int, publico :: [String], participantes :: [Auto], trampa :: Trampa} deriving (Show)
+type Trampa = Carrera -> Carrera
+
 deReversa :: Truco
 deReversa unAuto = unAuto {nivelNafta = div (velocidad unAuto) 5 + nivelNafta unAuto}
 
