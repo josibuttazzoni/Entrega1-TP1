@@ -47,3 +47,24 @@ turbo unAuto = unAuto {velocidad = ((+velocidad unAuto).(*10).nivelNafta) unAuto
 
 sacarAlPistero :: Trampa
 sacarAlPistero unaCarrera = unaCarrera {participantes = (drop 1).participantes $unaCarrera}
+
+lluvia :: Truco
+lluvia unAuto = unAuto {velocidad=velocidad unAuto - 10}
+
+lluviaTrampa :: Trampa
+lluviaTrampa unaCarrera = unaCarrera {participantes=map(lluvia).participantes $unaCarrera}
+
+inutilidad :: Truco
+inutilidad unAuto = unAuto
+
+neutralizarTrucos :: Trampa
+neutralizarTrucos unaCarrera = unaCarrera {participantes = map(inutilidad).participantes $unaCarrera}
+
+pocaReserva :: Auto -> Bool
+pocaReserva = (>30).nivelNafta
+
+pocaReservaTrampa :: Trampa
+pocaReservaTrampa unaCarrera = unaCarrera {participantes = filter(pocaReserva).participantes $unaCarrera}
+
+podio :: Trampa
+podio unaCarrera = unaCarrera {participantes = take 3.participantes $unaCarrera}
