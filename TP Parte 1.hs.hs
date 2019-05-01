@@ -3,7 +3,7 @@ data Auto = Auto {nombre :: String, nivelNafta :: Int, velocidad :: Int , nombre
 type Truco = Auto -> Auto
 
 deReversa :: Truco
-deReversa unAuto = unAuto {nivelNafta = ((+200).nivelNafta) unAuto}
+deReversa unAuto = unAuto {nivelNafta = div (velocidad unAuto) 5 + nivelNafta unAuto}
 
 cambiarVelocidad unAuto incremento = unAuto {velocidad=incremento.velocidad $unAuto}
 
