@@ -2,7 +2,7 @@ import Text.Show.Functions
 data Auto = Auto {nombre :: String, nivelNafta :: Int, velocidad :: Int , nombreEnamorade :: String, truco :: Truco} deriving (Show)
 type Truco = Auto -> Auto
 
-data Carrera = Carrera {nombreCarrera :: String, largoPista :: Float, cantidadVueltas :: Int, publico :: [String], participantes :: [Auto], trampa :: Trampa} deriving (Show)
+data Carrera = Carrera {nombreCarrera :: String, largoPista :: Int, cantidadVueltas :: Int, publico :: [String], participantes :: [Auto], trampa :: Trampa} deriving (Show)
 type Trampa = Carrera -> Carrera
 
 rochaMcQueen = Auto "RochaMcQueen" 300 0 "Ronco" deReversa
@@ -10,7 +10,7 @@ biankerr = Auto "Biankerr" 500 20 "Tinch" impresionar
 gusthav = Auto "Gusthav" 200 130 "PetiLaLinda" nitro
 rodra = Auto "Rodra" 0 50 "Taisa" (fingirAmor ("Petra"))
 
-potreroFunes = Carrera "potreroFunes" 5.0 3 ["Ronco", "Tinch", "Dodain"] [rochaMcQueen, biankerr, gusthav, rodra] sacarAlPistero
+potreroFunes = Carrera "potreroFunes" 5 3 ["Ronco", "Tinch", "Dodain"] [rochaMcQueen, biankerr, gusthav, rodra] sacarAlPistero
 
 cambiarVelocidad unAuto incremento = unAuto {velocidad=incremento.velocidad $unAuto}
 
@@ -53,7 +53,7 @@ sacarAlPistero :: Trampa
 sacarAlPistero unaCarrera = trampaBase unaCarrera (drop 1)
 
 lluvia :: Truco
-lluvia unAuto = unAuto {velocidad=velocidad unAuto - 10}
+lluvia unAuto = unAuto {velocidad = velocidad unAuto - 10}
 
 lluviaTrampa :: Trampa
 lluviaTrampa unaCarrera = trampaBase unaCarrera (map(lluvia))
@@ -72,3 +72,18 @@ pocaReservaTrampa unaCarrera = trampaBase unaCarrera (filter(pocaReserva))
 
 podio :: Trampa
 podio unaCarrera = trampaBase unaCarrera (take 3)
+
+restarNafta :: Carrera -> Truco
+restarNafta unaCarrera unAuto = unAuto {nivelNafta = nivelNafta unAuto - (div (largoPista unaCarrera) 10) * (velocidad unAuto)}
+
+restarNaftaParticipantes :: [Auto] -> Carrera -> [Auto]
+restarNaftaParticipantes autos unaCarrera = map(restarNafta unaCarrera) autos
+
+suEnamoradeEstaEnElPublico :: Carrera -> Auto -> Bool
+suEnamoradeEstaEnElPublico unaCarrera unAuto = elem (nombreEnamorade unAuto) (publico unaCarrera)
+
+realizarTruco :: Auto -> Auto
+realizarTruco unAuto = truco unAuto unAuto
+
+realizaSuTruco :: Trampa
+realizaSuTruco unaCarrera = unaCarrera {participantes = map(realizarTruco).filter(suEnamoradeEstaEnElPublico unaCarrera).participantes $unaCarrera}
