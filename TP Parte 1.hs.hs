@@ -45,7 +45,7 @@ queTrucazo :: String -> Truco
 queTrucazo enamoradeConveniencia = incrementarVelocidad.fingirAmor enamoradeConveniencia
 
 turbo :: Truco
-turbo unAuto = unAuto {velocidad = ((+velocidad unAuto).(*10).nivelNafta) unAuto , nivelNafta = 0}
+turbo unAuto = unAuto {velocidad = ((+velocidad unAuto).(*10).nivelNafta) unAuto , nivelNafta = 0} 
 
 trampaBase unaCarrera funcion = unaCarrera {participantes = funcion.participantes $unaCarrera}
 
@@ -53,7 +53,7 @@ sacarAlPistero :: Trampa
 sacarAlPistero unaCarrera = trampaBase unaCarrera (drop 1)
 
 lluvia :: Truco
-lluvia unAuto = unAuto {velocidad = velocidad unAuto - 10}
+lluvia unAuto = cambiarVelocidad unAuto ((-)(10))
 
 lluviaTrampa :: Trampa
 lluviaTrampa unaCarrera = trampaBase unaCarrera (map(lluvia))
@@ -76,8 +76,8 @@ podio unaCarrera = trampaBase unaCarrera (take 3)
 restarNafta :: Carrera -> Truco
 restarNafta unaCarrera unAuto = unAuto {nivelNafta = nivelNafta unAuto - (div (largoPista unaCarrera) 10) * (velocidad unAuto)}
 
-restarNaftaParticipantes :: [Auto] -> Carrera -> [Auto]
-restarNaftaParticipantes autos unaCarrera = map(restarNafta unaCarrera) autos
+restarNaftaParticipantes :: [Auto] -> Carrera -> Carrera
+restarNaftaParticipantes autos unaCarrera = unaCarrera {participantes = map(restarNafta unaCarrera) autos}
 
 suEnamoradeEstaEnElPublico :: Carrera -> Auto -> Bool
 suEnamoradeEstaEnElPublico unaCarrera unAuto = elem (nombreEnamorade unAuto) (publico unaCarrera)
@@ -86,4 +86,14 @@ realizarTruco :: Auto -> Auto
 realizarTruco unAuto = truco unAuto unAuto
 
 realizaSuTruco :: Trampa
-realizaSuTruco unaCarrera = unaCarrera {participantes = map(realizarTruco).filter(suEnamoradeEstaEnElPublico unaCarrera).participantes $unaCarrera}
+realizaSuTruco unaCarrera = unaCarrera {participantes = (map(realizarTruco).filter(suEnamoradeEstaEnElPublico unaCarrera).participantes $unaCarrera) 
+++ (filter(not.suEnamoradeEstaEnElPublico unaCarrera).participantes $unaCarrera)}
+
+darVuelta :: Carrera -> Carrera
+darVuelta unaCarrera = trampa(unaCarrera).realizaSuTruco.restarNaftaParticipantes(participantes unaCarrera) $unaCarrera
+
+correrCarrera :: Carrera -> Carrera
+correrCarrera unaCarrera = iterate darVuelta unaCarrera !! (cantidadVueltas unaCarrera)
+
+velocidadMaxima :: Carrera -> Int
+velocidadMaxima unaCarrera = maximum.map(velocidad).participantes $ (correrCarrera unaCarrera)
