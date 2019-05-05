@@ -94,8 +94,8 @@ realizarTruco unAuto = truco unAuto unAuto
 
 realizanSuTruco :: Carrera -> Auto -> Auto
 realizanSuTruco unaCarrera unAuto
-    |suEnamoradeEstaEnElPublico unaCarrera unAuto == False = unAuto
-    |otherwise = realizarTruco unAuto
+    |suEnamoradeEstaEnElPublico unaCarrera unAuto = realizarTruco unAuto
+    |otherwise = unAuto
 
 mapeoTruco :: Carrera -> Carrera
 mapeoTruco unaCarrera = unaCarrera {participantes=map(realizanSuTruco unaCarrera).participantes $unaCarrera}
