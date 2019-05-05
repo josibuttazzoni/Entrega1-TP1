@@ -106,5 +106,15 @@ darVuelta unaCarrera = trampa(unaCarrera).mapeoTruco.restarNaftaParticipantes(pa
 correrCarrera :: Carrera -> Carrera
 correrCarrera unaCarrera = iterate darVuelta unaCarrera !! (cantidadVueltas unaCarrera)
 
-velocidadMaxima :: Carrera -> Float
-velocidadMaxima unaCarrera = maximum.map(velocidad).participantes $ (correrCarrera unaCarrera)
+velocidadMaxima :: Auto -> Auto -> Auto
+velocidadMaxima unAuto unAuto2
+    |velocidad unAuto > velocidad unAuto2 = unAuto
+    |otherwise = unAuto2
+
+quienGana :: Carrera -> Auto
+quienGana unaCarrera = foldl velocidadMaxima (head.participantes $unaCarrera) (participantes (correrCarrera unaCarrera))
+
+trucosPrueba = [nitro, deReversa, impresionar]
+
+elGranTruco :: Auto -> [Truco] -> Auto
+elGranTruco unAuto trucos = foldl (flip($)) unAuto trucos
