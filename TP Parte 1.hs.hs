@@ -117,5 +117,5 @@ quienGana unaCarrera = foldl velocidadMaxima (head.participantes $unaCarrera) (p
 trucosPrueba = [nitro, deReversa, impresionar]
 
 elGranTruco :: Auto -> [Truco] -> Auto
-elGranTruco unAuto trucos = foldl ($) trucos unAuto
+elGranTruco unAuto trucos = foldl (flip($)) unAuto trucos
 
